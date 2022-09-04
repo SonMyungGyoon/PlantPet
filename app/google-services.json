@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "352298659828",
+    "project_id": "plantpet-487ea",
+    "storage_bucket": "plantpet-487ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352298659828:android:8dc0dd8dd866242f8ad3a1",
+        "android_client_info": {
+          "package_name": "com.example.plantpet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352298659828-2pn9g8uqpq368r2c544300o3k5kv5dth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFeavEgAm9gk-7uwwe8mV3hrh8jC1bJl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352298659828-2pn9g8uqpq368r2c544300o3k5kv5dth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
