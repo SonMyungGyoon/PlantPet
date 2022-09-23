@@ -25,9 +25,6 @@ class SensorFragment : Fragment() {
 
     private lateinit var binding : FragmentSensorBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,14 +40,49 @@ class SensorFragment : Fragment() {
                 val pot_humidity = dataSnapshot.child("pot_humidity").value
                 val pot_light = dataSnapshot.child("light").value
                 val pot_soil = dataSnapshot.child("soil_humidity").value
+                val led = dataSnapshot.child("POT_LED").value
+                val pump = dataSnapshot.child("POT_PUMP").value
+                val autoact = dataSnapshot.child("AUTO_ACT").value
                 binding.temptext.text = pot_temperature.toString() + "°C"
                 binding.humitext.text = pot_humidity.toString() + "%"
                 binding.lighttext.text = pot_light.toString() + "%"
                 binding.soiltext.text = pot_soil.toString() + "%"
+                binding.ledswitch.isChecked = led == "1"
+                binding.pumpswitch.isChecked = pump == "1"
+                binding.autoact.isChecked = autoact == "1"
             }
             override fun onCancelled(error: DatabaseError) {  // Failed to read value
             }
         })
+
+        binding.ledswitch.setOnCheckedChangeListener{ buttonView, isChecked ->
+            if(isChecked){
+                myRef.child("POT_LED").setValue("1")
+            }
+            else{
+                myRef.child("POT_LED").setValue("0")
+            }
+        }
+        binding.pumpswitch.setOnCheckedChangeListener{ buttonView, isChecked ->
+            if(isChecked){
+                myRef.child("POT_PUMP").setValue("1")
+            }
+            else{
+                myRef.child("POT_PUMP").setValue("0")
+            }
+        }
+
+        binding.autoact.setOnCheckedChangeListener{ buttonView, isChecked ->
+            binding.ledswitch.isEnabled = !isChecked
+            binding.pumpswitch.isEnabled = !isChecked
+            if(isChecked){
+                myRef.child("AUTO_ACT").setValue("1")
+            }
+            else{
+                myRef.child("AUTO_ACT").setValue("0")
+            }
+        }
+
         binding.hometap.setOnClickListener{
             it.findNavController().navigate(R.id.action_sensorFragment_to_homeFragment)
         }
@@ -65,6 +97,6 @@ class SensorFragment : Fragment() {
         }
         return binding.root
     }
-
+    
 
 }

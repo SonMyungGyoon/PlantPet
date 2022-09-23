@@ -40,7 +40,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_margin="5dp">
                 <TextView
                     android:id="@+id/temptext"
@@ -82,7 +82,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_margin="5dp">
                 <TextView
                     android:id="@+id/lighttext"
@@ -116,6 +116,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="2"/>
                 <Switch
+                    android:id="@+id/ledswitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LED"
@@ -129,6 +130,7 @@
                     android:layout_weight="4"/>
 
                 <Switch
+                    android:id="@+id/pumpswitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PUMP"
@@ -152,6 +154,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="2"/>
                 <Switch
+                    android:id="@+id/autoact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="자동 조절"
