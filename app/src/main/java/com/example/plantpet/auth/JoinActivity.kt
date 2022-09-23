@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.plantpet.MainActivity
 import com.example.plantpet.R
-import com.example.plantpet.databinding.ActivityIntroBinding
 import com.example.plantpet.databinding.ActivityJoinBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

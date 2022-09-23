@@ -1,5 +1,6 @@
 package com.example.plantpet.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.plantpet.R
 import com.example.plantpet.databinding.FragmentSensorBinding
+import com.example.plantpet.setting.SensorSettingActivity
 import com.google.firebase.database.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -83,6 +85,10 @@ class SensorFragment : Fragment() {
             }
         }
 
+        binding.sensorsetBtn.setOnClickListener {
+            val intent = Intent(context, SensorSettingActivity::class.java)
+            startActivity(intent)
+        }
         binding.hometap.setOnClickListener{
             it.findNavController().navigate(R.id.action_sensorFragment_to_homeFragment)
         }

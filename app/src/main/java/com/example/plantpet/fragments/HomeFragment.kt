@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.plantpet.R
 import com.example.plantpet.databinding.FragmentHomeBinding
+import com.google.firebase.database.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +36,24 @@ class HomeFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+
+        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+        val myRef : DatabaseReference = database.getReference("sensor/arduinocode")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val pot_temperature = dataSnapshot.child("pot_temperature").value
+                val pot_humidity = dataSnapshot.child("pot_humidity").value
+                val pot_light = dataSnapshot.child("light").value
+                val pot_soil = dataSnapshot.child("soil_humidity").value
+                binding.temptext.text = pot_temperature.toString() + "°C"
+                binding.humitext.text = pot_humidity.toString() + "%"
+                binding.lighttext.text = pot_light.toString() + "%"
+                binding.soiltext.text = pot_soil.toString() + "%"
+            }
+            override fun onCancelled(error: DatabaseError) {  // Failed to read value
+            }
+        })
+
         binding.sensortap.setOnClickListener{
             //Toast.makeText(context, "sensortap clicked", Toast.LENGTH_LONG).show()
             it.findNavController().navigate(R.id.action_homeFragment_to_sensorFragment)
