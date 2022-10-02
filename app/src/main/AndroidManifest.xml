@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.plantpet">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantPet">
+        <activity
+            android:name=".board.PostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".board.BoardWriteACtivity"
+            android:exported="false" />
+        <activity
+            android:name="board.BoardWriteActivity"
+            android:exported="false" />
         <activity
             android:name=".setting.SensorSettingActivity"
             android:exported="false" />
