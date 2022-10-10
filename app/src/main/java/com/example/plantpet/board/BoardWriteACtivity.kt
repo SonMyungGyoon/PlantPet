@@ -19,12 +19,9 @@ import java.io.ByteArrayOutputStream
 class BoardWriteACtivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBoardWriteBinding
-
     private var isImage = false
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board_write)
