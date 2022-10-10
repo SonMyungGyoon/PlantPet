@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.example.plantpet.FB.FBRef
 import com.example.plantpet.R
 import com.example.plantpet.board.BoardListLVAdapter
 import com.example.plantpet.board.BoardModel
@@ -31,8 +32,14 @@ private const val ARG_PARAM2 = "param2"
 class TalkFragment : Fragment() {
 
     private lateinit var binding : FragmentTalkBinding
+
+
     private val TAG = TalkFragment::class.java.simpleName
+
     private val boardDataList = mutableListOf<BoardModel>()
+    private val boardKeyList = mutableListOf<String>()
+
+
     private lateinit var adap : BoardListLVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,17 +51,16 @@ class TalkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_talk, container, false)
 
         adap = BoardListLVAdapter(boardDataList)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_talk, container, false)
+
 
         binding.boardListView.adapter = adap
 
         binding.boardListView.setOnItemClickListener{parent, view, position, id ->
             val intent = Intent(context, PostActivity::class.java)
-            intent.putExtra("title", boardDataList[position].title) //타이틀
-            intent.putExtra("content", boardDataList[position].content) //내용
-            intent.putExtra("time", boardDataList[position].time) //시간
+            intent.putExtra("key",boardKeyList[position])
             startActivity(intent)
         }
 
@@ -84,19 +90,25 @@ class TalkFragment : Fragment() {
 
         val postListner = object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
+
                 boardDataList.clear()
+
                 for(dataModel in snapshot.children) {
+
+
                     val item = dataModel.getValue(BoardModel::class.java)
                     boardDataList.add(item!!)
+                    boardKeyList.add(dataModel.key.toString())
                 }
                 boardDataList.reverse()
+                boardKeyList.reverse()
                 adap.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
         }
+        FBRef.boardRef.addValueEventListener(postListner)
     }
 
 }
