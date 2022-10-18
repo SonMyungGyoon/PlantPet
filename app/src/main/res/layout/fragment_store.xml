@@ -37,10 +37,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1" />-->
 
             <LinearLayout
                 android:background="@color/mainGreen"
@@ -78,12 +78,12 @@
                 android:layout_weight="1"
                 android:src="@drawable/bottom_talk" />
 
-            <ImageView
-                android:id="@+id/bookmarktap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/bottom_bookmark" />
+<!--            <ImageView-->
+<!--                android:id="@+id/bookmarktap"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/bottom_bookmark" />-->
 
             <ImageView
                 android:id="@+id/storetap"

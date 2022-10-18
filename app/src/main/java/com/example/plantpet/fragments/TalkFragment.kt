@@ -74,9 +74,6 @@ class TalkFragment : Fragment() {
         binding.sensortap.setOnClickListener{
             it.findNavController().navigate(R.id.action_talkFragment_to_sensorFragment)
         }
-        binding.bookmarktap.setOnClickListener{
-            it.findNavController().navigate(R.id.action_talkFragment_to_bookmarkFragment)
-        }
         binding.storetap.setOnClickListener{
             it.findNavController().navigate(R.id.action_talkFragment_to_storeFragment)
         }

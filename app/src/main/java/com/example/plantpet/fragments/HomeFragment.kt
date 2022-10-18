@@ -93,10 +93,6 @@ class HomeFragment : Fragment() {
             //Toast.makeText(context, "sensortap clicked", Toast.LENGTH_LONG).show()
             it.findNavController().navigate(R.id.action_homeFragment_to_talkFragment)
         }
-        binding.bookmarktap.setOnClickListener{
-            //Toast.makeText(context, "sensortap clicked", Toast.LENGTH_LONG).show()
-            it.findNavController().navigate(R.id.action_homeFragment_to_bookmarkFragment)
-        }
         binding.storetap.setOnClickListener{
             //Toast.makeText(context, "sensortap clicked", Toast.LENGTH_LONG).show()
             it.findNavController().navigate(R.id.action_homeFragment_to_storeFragment)
