@@ -35,7 +35,6 @@ class BoardWriteACtivity : AppCompatActivity() {
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
 
-
             val key = FBRef.boardRef.push().key.toString()
 
             FBRef.boardRef

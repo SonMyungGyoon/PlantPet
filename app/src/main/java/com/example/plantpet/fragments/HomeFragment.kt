@@ -1,14 +1,19 @@
 package com.example.plantpet.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.example.plantpet.FB.FBAuth
+import com.example.plantpet.FB.FBRef
 import com.example.plantpet.R
+import com.example.plantpet.board.BoardModel
+import com.example.plantpet.board.HomeBoardLVAdapter
+import com.example.plantpet.board.PostActivity
 import com.example.plantpet.databinding.FragmentHomeBinding
 import com.google.firebase.database.*
 
@@ -26,6 +31,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
 
+    private val TAG = TalkFragment::class.java.simpleName
+
+    private val boardDataList = mutableListOf<BoardModel>()
+    private val boardKeyList = mutableListOf<String>()
+
+
+    private lateinit var adap : HomeBoardLVAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,24 +48,42 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        adap = HomeBoardLVAdapter(boardDataList)
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
+        binding.boardListView.adapter = adap
+
+        binding.boardListView.setOnItemClickListener{parent, view, position, id ->
+            val intent = Intent(context, PostActivity::class.java)
+            intent.putExtra("key",boardKeyList[position])
+            startActivity(intent)
+        }
+
         val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        val myRef : DatabaseReference = database.getReference("sensor/arduinocode")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val pot_temperature = dataSnapshot.child("pot_temperature").value
-                val pot_humidity = dataSnapshot.child("pot_humidity").value
-                val pot_light = dataSnapshot.child("light").value
-                val pot_soil = dataSnapshot.child("soil_humidity").value
-                binding.temptext.text = pot_temperature.toString() + "°C"
-                binding.humitext.text = pot_humidity.toString() + "%"
-                binding.lighttext.text = pot_light.toString() + "%"
-                binding.soiltext.text = pot_soil.toString() + "%"
-            }
-            override fun onCancelled(error: DatabaseError) {  // Failed to read value
-            }
-        })
+        val userRef : DatabaseReference = database.getReference("userData/" + FBAuth.getUid())
+        System.out.println("checkpoint1 path : " + "userData/" + FBAuth.getUid())
+        var sensorCode = ""
+        userRef.child("sensorId").get().addOnSuccessListener{
+            sensorCode = it.value.toString()
+            System.out.println("checkpoint2 path : " + sensorCode)
+            System.out.println("checkpoint3 path : " + it.value.toString())
+            var myRef : DatabaseReference = database.getReference("sensor/"+sensorCode)
+            myRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val pot_temperature = dataSnapshot.child("pot_temperature").value
+                    val pot_humidity = dataSnapshot.child("pot_humidity").value
+                    val pot_light = dataSnapshot.child("light").value
+                    val pot_soil = dataSnapshot.child("soil_humidity").value
+                    binding.temptext.text = pot_temperature.toString() + "°C"
+                    binding.humitext.text = pot_humidity.toString() + "%"
+                    binding.lighttext.text = pot_light.toString() + "%"
+                    binding.soiltext.text = pot_soil.toString() + "%"
+                }
+                override fun onCancelled(error: DatabaseError) {  // Failed to read value
+                }
+            })
+        }
 
         binding.sensortap.setOnClickListener{
             //Toast.makeText(context, "sensortap clicked", Toast.LENGTH_LONG).show()
@@ -71,8 +102,33 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_homeFragment_to_storeFragment)
         }
 
+        getFBBoardData()
 
         return binding.root
+    }
+
+    private fun getFBBoardData(){
+
+        val postListner = object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                boardDataList.clear()
+
+                for(dataModel in snapshot.children) {
+
+                    val item = dataModel.getValue(BoardModel::class.java)
+                    boardDataList.add(item!!)
+                    boardKeyList.add(dataModel.key.toString())
+                }
+                boardDataList.reverse()
+                boardKeyList.reverse()
+                adap.notifyDataSetChanged()
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        }
+        FBRef.boardRef.addValueEventListener(postListner)
     }
 
 }

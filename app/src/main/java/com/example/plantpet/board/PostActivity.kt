@@ -12,12 +12,13 @@ import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.plantpet.FB.FBAuth
 import com.example.plantpet.FB.FBRef
+import com.example.plantpet.FB.FBRef.Companion.database
 import com.example.plantpet.R
+import com.example.plantpet.comment.CommentLVAdapter
+import com.example.plantpet.comment.CommentModel
 import com.example.plantpet.databinding.ActivityPostBinding
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.lang.Exception
@@ -27,6 +28,10 @@ class PostActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPostBinding
 
     private lateinit var key : String
+
+    private val commentDataList = mutableListOf<CommentModel>()
+
+    private lateinit var commentAdapter : CommentLVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +43,19 @@ class PostActivity : AppCompatActivity() {
             ShowDialog()
         }
 
-
         key = intent.getStringExtra("key").toString()
 
         getBoardData(key)
         getImageData(key)
+
+        binding.commentBtn.setOnClickListener{
+            insertComment()
+        }
+
+        commentAdapter = CommentLVAdapter(commentDataList)
+        binding.commentLV.adapter = commentAdapter
+
+        getCommentData(key)
 
     }
 
@@ -63,15 +76,9 @@ class PostActivity : AppCompatActivity() {
                     if(myUid.equals(dataModel.uid)){
                         binding.postControlIcon.isVisible = true
                     }
-
-
-
                 } catch (e : Exception){
 
                 }
-
-
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -102,12 +109,52 @@ class PostActivity : AppCompatActivity() {
                     .into(imageView)
             }
             else{
-
+                binding.getImageArea.isVisible = false
             }
         })
 
+    }
 
+    fun getCommentData(key : String){
+        val postListner = object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
 
+                commentDataList.clear()
+                for(dataModel in snapshot.children) {
+
+                    val item = dataModel.getValue(CommentModel::class.java)
+                    commentDataList.add(item!!)
+                    commentDataList
+                }
+
+                commentAdapter.notifyDataSetChanged()
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        }
+        FBRef.commentRef.child(key).addValueEventListener(postListner)
+    }
+
+    fun insertComment(){
+        //comment
+        // -boardkey
+        //      - commentKey
+        //          -commentData
+
+        FBRef.commentRef
+            .child(key)
+            .push()
+            .setValue(
+                CommentModel(
+                    FBAuth.getEmail(),
+                    binding.commentArea.text.toString(),
+                    FBAuth.getTime()
+                )
+            )
+
+        Toast.makeText(this,"댓글입력 완료", Toast.LENGTH_SHORT).show()
+        binding.commentArea.setText("")
     }
 
     private fun ShowDialog(){

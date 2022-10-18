@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.example.plantpet.FB.FBAuth
+import com.example.plantpet.FB.FBRef
+import com.example.plantpet.FB.UserModel
 import com.example.plantpet.MainActivity
 import com.example.plantpet.R
+import com.example.plantpet.board.BoardModel
 import com.example.plantpet.databinding.ActivityIntroBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,6 +39,10 @@ class IntroActivity : AppCompatActivity() {
             auth.signInAnonymously()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        val uid = FBAuth.getUid()
+                        FBRef.userRef
+                            .child(uid)
+                            .setValue(UserModel("", ""))
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }

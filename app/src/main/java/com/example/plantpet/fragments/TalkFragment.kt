@@ -55,7 +55,6 @@ class TalkFragment : Fragment() {
         adap = BoardListLVAdapter(boardDataList)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_talk, container, false)
 
-
         binding.boardListView.adapter = adap
 
         binding.boardListView.setOnItemClickListener{parent, view, position, id ->
@@ -94,7 +93,6 @@ class TalkFragment : Fragment() {
                 boardDataList.clear()
 
                 for(dataModel in snapshot.children) {
-
 
                     val item = dataModel.getValue(BoardModel::class.java)
                     boardDataList.add(item!!)

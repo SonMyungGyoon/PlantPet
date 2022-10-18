@@ -19,77 +19,171 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="My PlantPet"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="13">
+
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_margin="5dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:src="@drawable/temp2"></ImageView>
+
+                        <TextView
+                            android:id="@+id/temptext"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:hint="no signal"
+                            android:textColor="@color/black"
+                            android:textSize="32sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:src="@drawable/humi"></ImageView>
+
+                        <TextView
+                            android:id="@+id/humitext"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:hint="no signal"
+                            android:textSize="32sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_margin="5dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/temp2"></ImageView>
-                    <ImageView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/humi"></ImageView>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/light"></ImageView>
-                    <ImageView
+                        android:layout_margin="5dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/light"></ImageView>
+
+                        <TextView
+                            android:id="@+id/lighttext"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:hint="no signal"
+                            android:textSize="32sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/soilhumi"></ImageView>
+                        android:layout_margin="5dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/soilhumi"></ImageView>
+
+                        <TextView
+                            android:id="@+id/soiltext"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:hint="no signal"
+                            android:textSize="32sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
                 </LinearLayout>
+
+                <TextView
+
+                    android:text="게시판"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="80dp">
-                    <TextView
-                        android:id="@+id/temptext"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:hint="no signal"
-                        android:textSize="32sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/humitext"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:hint="no signal"
-                        android:textSize="32sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/lighttext"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:hint="no signal"
-                        android:textSize="32sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/soiltext"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:hint="no signal"
-                        android:textSize="32sp"
-                        android:textStyle="bold"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ListView
+                        android:id="@+id/boardListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp">
+                    </ListView>
                 </LinearLayout>
             </LinearLayout>
 
@@ -100,10 +194,10 @@
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout3">
 
                 <LinearLayout
-                    android:background="@color/mainGreen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@color/mainGreen" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

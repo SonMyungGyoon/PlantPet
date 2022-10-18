@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.plantpet.R
+import com.example.plantpet.databinding.FragmentBookmarkBinding
+import com.example.plantpet.databinding.FragmentStoreBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,6 +24,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class StoreFragment : Fragment() {
 
+    private lateinit var binding : FragmentStoreBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -28,7 +35,27 @@ class StoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_store, container, false)
+
+        val webView : WebView = view.findViewById(R.id.storeWebView)
+        webView.loadUrl("https://www.google.com/")
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_store, container, false)
+        binding.hometap.setOnClickListener {
+            it.findNavController().navigate(R.id.action_storeFragment_to_homeFragment)
+        }
+        binding.sensortap.setOnClickListener {
+            it.findNavController().navigate(R.id.action_storeFragment_to_sensorFragment)
+        }
+        binding.talktap.setOnClickListener {
+            it.findNavController().navigate(R.id.action_storeFragment_to_talkFragment)
+        }
+        binding.bookmarktap.setOnClickListener {
+            it.findNavController().navigate(R.id.action_storeFragment_to_bookmarkFragment)
+        }
+
+        return view
     }
 
 }

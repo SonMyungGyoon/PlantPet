@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantPet">
         <activity
+            android:name=".setting.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".board.EditActivity"
             android:exported="false" />
         <activity
@@ -22,16 +25,7 @@
             android:name=".board.BoardWriteACtivity"
             android:exported="false" />
         <activity
-            android:name="board.BoardWriteActivity"
-            android:exported="false" />
-        <activity
             android:name=".setting.SensorSettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
             android:exported="false" />
         <activity
             android:name=".auth.JoinActivity"
@@ -52,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".fragments.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
