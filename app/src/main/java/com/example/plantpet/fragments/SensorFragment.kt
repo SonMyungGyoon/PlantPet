@@ -46,14 +46,44 @@ class SensorFragment : Fragment() {
         val uid = auth.currentUser?.uid.toString()
         val database : FirebaseDatabase = FirebaseDatabase.getInstance()
         val userRef : DatabaseReference = database.getReference("userData/" + uid)
-        userRef.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                path = snapshot.child("sensorId").value.toString()
-            }
-            override fun onCancelled(error: DatabaseError) {  // Failed to read value
-            }
-        })
-        System.out.println(path)
+
+        userRef.child("sensorId").get().addOnSuccessListener{
+            var sensorCode = ""
+            sensorCode = it.value.toString()
+            System.out.println("checkpoint2 path : " + sensorCode)
+            System.out.println("checkpoint3 path : " + it.value.toString())
+            var myRef : DatabaseReference = database.getReference("sensor/"+sensorCode)
+            myRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if(sensorCode != ""){
+                        val pot_temperature = dataSnapshot.child("pot_temperature").value
+                        val pot_humidity = dataSnapshot.child("pot_humidity").value
+                        val pot_light = dataSnapshot.child("light").value
+                        val pot_soil = dataSnapshot.child("soil_humidity").value
+                        val led = dataSnapshot.child("POT_LED").value
+                        val pump = dataSnapshot.child("POT_PUMP").value
+                        val autoact = dataSnapshot.child("AUTO_ACT").value
+                        binding.temptext.text = pot_temperature.toString() + "°C"
+                        binding.humitext.text = pot_humidity.toString() + "%"
+                        binding.lighttext.text = pot_light.toString() + "%"
+                        binding.soiltext.text = pot_soil.toString() + "%"
+                        binding.ledswitch.isChecked = led == "1"
+                        binding.pumpswitch.isChecked = pump == "1"
+                        binding.autoact.isChecked = autoact == "1"
+
+                        val limit_ligth = dataSnapshot.child("limit_light").value
+                        val limit_soil = dataSnapshot.child("limit_soil").value
+                        val light_value = dataSnapshot.child("light_value").value
+                        binding.limitlighttext.text = limit_ligth.toString() + "%"
+                        binding.limitsoiltext.text = limit_soil.toString() + "%"
+                        binding.ledtext.text = light_value.toString() + "%"
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {  // Failed to read value
+                }
+            })
+        }
+
     }
 
     override fun onCreateView(
@@ -66,100 +96,102 @@ class SensorFragment : Fragment() {
         val database : FirebaseDatabase = FirebaseDatabase.getInstance()
         val userRef : DatabaseReference = database.getReference("userData/" + FBAuth.getUid())
 
-        System.out.println("checkpoint1 path : " + "userData/" + FBAuth.getUid())
-        var sensorCode = ""
+        userRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                path = snapshot.child("sensorId").value.toString()
+                val myRef : DatabaseReference = database.getReference("sensor/"+path)
+                myRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val pot_temperature = dataSnapshot.child("pot_temperature").value
+                        val pot_humidity = dataSnapshot.child("pot_humidity").value
+                        val pot_light = dataSnapshot.child("light").value
+                        val pot_soil = dataSnapshot.child("soil_humidity").value
+                        binding.temptext.text = pot_temperature.toString() + "°C"
+                        binding.humitext.text = pot_humidity.toString() + "%"
+                        binding.lighttext.text = pot_light.toString() + "%"
+                        binding.soiltext.text = pot_soil.toString() + "%"
 
-        userRef.child("sensorId").get().addOnSuccessListener{
-            sensorCode = it.value.toString()
-            System.out.println("checkpoint2 path : " + sensorCode)
-            System.out.println("checkpoint3 path : " + it.value.toString())
-            var myRef : DatabaseReference = database.getReference("sensor/"+sensorCode)
-            myRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val pot_temperature = dataSnapshot.child("pot_temperature").value
-                    val pot_humidity = dataSnapshot.child("pot_humidity").value
-                    val pot_light = dataSnapshot.child("light").value
-                    val pot_soil = dataSnapshot.child("soil_humidity").value
-                    val led = dataSnapshot.child("POT_LED").value
-                    val pump = dataSnapshot.child("POT_PUMP").value
-                    val autoact = dataSnapshot.child("AUTO_ACT").value
-                    binding.temptext.text = pot_temperature.toString() + "°C"
-                    binding.humitext.text = pot_humidity.toString() + "%"
-                    binding.lighttext.text = pot_light.toString() + "%"
-                    binding.soiltext.text = pot_soil.toString() + "%"
-                    binding.ledswitch.isChecked = led == "1"
-                    binding.pumpswitch.isChecked = pump == "1"
-                    binding.autoact.isChecked = autoact == "1"
+                        val limit_ligth = dataSnapshot.child("limit_light").value
+                        val limit_soil = dataSnapshot.child("limit_soil").value
+                        val light_value = dataSnapshot.child("light_value").value
+                        binding.limitlighttext.text = limit_ligth.toString() + "%"
+                        binding.limitsoiltext.text = limit_soil.toString() + "%"
+                        binding.ledtext.text = light_value.toString() + "%"
 
-                    val limit_ligth = dataSnapshot.child("limit_light").value
-                    val limit_soil = dataSnapshot.child("limit_soil").value
-                    val light_value = dataSnapshot.child("light_value").value
-                    binding.limitlighttext.text = limit_ligth.toString() + "%"
-                    binding.limitsoiltext.text = limit_soil.toString() + "%"
-                    binding.ledtext.text = light_value.toString() + "%"
-                }
-                override fun onCancelled(error: DatabaseError) {  // Failed to read value
-                }
-            })
+                    }
+                    override fun onCancelled(error: DatabaseError) {  // Failed to read value
+                    }
+                })
 
-            binding.ledswitch.setOnCheckedChangeListener{ buttonView, isChecked ->
-                if(isChecked){
-                    myRef.child("POT_LED").setValue("1")
+                binding.ledswitch.setOnCheckedChangeListener{ buttonView, isChecked ->
+                    if(path != ""){
+                        if(isChecked){
+                            myRef.child("POT_LED").setValue("1")
+                        }
+                        else{
+                            myRef.child("POT_LED").setValue("0")
+                        }
+                    }
                 }
-                else{
-                    myRef.child("POT_LED").setValue("0")
+                binding.pumpswitch.setOnCheckedChangeListener{ buttonView, isChecked ->
+                    if(path !=""){
+                        if(isChecked){
+                            myRef.child("POT_PUMP").setValue("1")
+                        }
+                        else{
+                            myRef.child("POT_PUMP").setValue("0")
+                        }
+                    }
                 }
-            }
-            binding.pumpswitch.setOnCheckedChangeListener{ buttonView, isChecked ->
-                if(isChecked){
-                    myRef.child("POT_PUMP").setValue("1")
-                }
-                else{
-                    myRef.child("POT_PUMP").setValue("0")
-                }
-            }
 
-            binding.autoact.setOnCheckedChangeListener{ buttonView, isChecked ->
-                binding.ledswitch.isEnabled = !isChecked
-                binding.pumpswitch.isEnabled = !isChecked
-                if(isChecked){
-                    myRef.child("AUTO_ACT").setValue("1")
+                binding.autoact.setOnCheckedChangeListener{ buttonView, isChecked ->
+                    if(path !=""){
+                        binding.ledswitch.isEnabled = !isChecked
+                        binding.pumpswitch.isEnabled = !isChecked
+                        if(isChecked){
+                            myRef.child("AUTO_ACT").setValue("1")
+                            Thread.sleep(100)
+                        }
+                        else{
+                            myRef.child("AUTO_ACT").setValue("0")
+                            Thread.sleep(100)
+                        }
+                    }
                 }
-                else{
-                    myRef.child("AUTO_ACT").setValue("0")
-                }
-            }
 
-            binding.saveBtn.setOnClickListener {
-                val limit_light = binding.limitlightval.text.toString().toIntOrNull()
-                val limit_soil = binding.limitsoilval.text.toString().toIntOrNull()
-                val led_value = binding.ledval.text.toString().toIntOrNull()
+                binding.saveBtn.setOnClickListener {
+                    val limit_light = binding.limitlightval.text.toString().toIntOrNull()
+                    val limit_soil = binding.limitsoilval.text.toString().toIntOrNull()
+                    val led_value = binding.ledval.text.toString().toIntOrNull()
 
-                if(limit_light != null && limit_light >= 0 && limit_light <= 100){
-                    myRef.child("limit_light").setValue(limit_light)
+                    if(limit_light != null && limit_light >= 0 && limit_light <= 100){
+                        myRef.child("limit_light").setValue(limit_light)
+                    }
+                    if(limit_soil != null && limit_soil >= 0 && limit_soil <= 100){
+                        myRef.child("limit_soil").setValue(limit_soil)
+                    }
+                    if(led_value != null && led_value >= 0 && led_value <= 100){
+                        myRef.child("light_value").setValue(led_value)
+                    }
                 }
-                if(limit_soil != null && limit_soil >= 0 && limit_soil <= 100){
-                    myRef.child("limit_soil").setValue(limit_soil)
-                }
-                if(led_value != null && led_value >= 0 && led_value <= 100){
-                    myRef.child("light_value").setValue(led_value)
-                }
-            }
 
-            binding.sensorsetBtn.setOnClickListener {
-                showSensorDialog()
+                binding.sensorsetBtn.setOnClickListener {
+                    showSensorDialog()
+                }
+                binding.hometap.setOnClickListener{
+                    it.findNavController().navigate(R.id.action_sensorFragment_to_homeFragment)
+                }
+                binding.talktap.setOnClickListener{
+                    it.findNavController().navigate(R.id.action_sensorFragment_to_talkFragment)
+                }
+                binding.storetap.setOnClickListener{
+                    it.findNavController().navigate(R.id.action_sensorFragment_to_storeFragment)
+                }
             }
-            binding.hometap.setOnClickListener{
-                it.findNavController().navigate(R.id.action_sensorFragment_to_homeFragment)
+            override fun onCancelled(error: DatabaseError) {  // Failed to read value
             }
-            binding.talktap.setOnClickListener{
-                it.findNavController().navigate(R.id.action_sensorFragment_to_talkFragment)
-            }
-            binding.storetap.setOnClickListener{
-                it.findNavController().navigate(R.id.action_sensorFragment_to_storeFragment)
-            }
-        }
-        System.out.println("checkpoint4 path : " + sensorCode)
+        })
+
 
 //        var myRef : DatabaseReference = database.getReference("sensor/"+sensorCode)
 //        myRef.addValueEventListener(object : ValueEventListener {

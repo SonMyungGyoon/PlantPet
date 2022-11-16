@@ -94,5 +94,8 @@
         <action
             android:id="@+id/action_sensorFragment_to_talkFragment"
             app:destination="@id/talkFragment" />
+        <action
+            android:id="@+id/action_sensorFragment_self"
+            app:destination="@id/sensorFragment" />
     </fragment>
 </navigation>
