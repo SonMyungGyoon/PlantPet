@@ -41,6 +41,7 @@ class StoreFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+
         val view = inflater.inflate(R.layout.fragment_store, container, false)
 
         val webView : WebView = view.findViewById(R.id.storeWebView)
